@@ -49,6 +49,8 @@ def plot_history(history):
     axs[1].legend(loc="lower right")
     axs[1].set_title("loss eval")
 
+    plt.show()
+
 
 def prepare_datasets(test_size=0.25, validation_size=0.2):
     """Loads data and splits it into train, test and validation sets
@@ -85,6 +87,23 @@ def build_model(input_shape):
     Returns:
         model : RNN-LSTM model
     """
+
+    # build network topology
+    model = keras.Sequential()
+
+    # 2 LSTM layers
+    model.add(keras.layers.LSTM(
+        64, input_shape=input_shape, return_sequences=True))
+    model.add(keras.layers.LSTM(64))
+
+    # dense layer
+    model.add(keras.layers.Dense(64, activation='relu'))
+    model.add(keras.layers.Dropout(0.1))
+
+    # output layer
+    model.add(keras.layers.Dense(10, activation='softmax'))
+
+    return model
 
 
 def predict(model, x, y):
